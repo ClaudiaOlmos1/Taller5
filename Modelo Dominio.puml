@@ -1,0 +1,31 @@
+@startuml
+class "Usuario" as User {
+    Nombre
+    Apellido
+    Rut
+}
+
+class "Libro" as Book {
+    Nombre
+    Autor
+    ISBN
+    Categoría
+    Páginas
+    Stock
+}
+
+class "Registro" as Log {
+    Rut Vendedor
+    Nombre Vendedor
+    Apellido Vendedor
+    ISBN Libro
+    Nombre Libro
+    Tipo Transacción
+}
+
+User "1" -- "0..*" Book : "Pide / Devuelve / Añade" >
+User "1" -- "1" Log : "Realiza" >
+Book "0..*" -- "0..*" Log : "Registrado en" >
+
+@enduml
+

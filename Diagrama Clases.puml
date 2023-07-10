@@ -1,0 +1,131 @@
+@startuml
+left to right direction
+hide empty members
+skin rose
+
+package Entities {
+
+class Usuario {
+    - String rut
+    - String nombre
+    - String apellido
+    - String contrasena
+
+    + verificarContrasena(String): boolean
+    + getRut(): String
+    + getNombre(): String
+    + getApellido(): String
+    + getContrasena(): String
+    + setRut(String): void
+    + setNombre(String): void
+    + setApellido(String): void
+    + setContrasena(String): void
+}
+
+class Libro {
+    - String isbn
+    - String nombre
+    - String autor
+    - String categoria
+    - int paginas
+    - int stock
+
+    + prestar(): boolean
+    + devolver(): void
+    + getIsbn(): String
+    + getNombre(): String
+    + getAutor(): String
+    + getCategoria(): String
+    + getPaginas(): int
+    + getStock(): int
+    + setIsbn(String): void
+    + setNombre(String): void
+    + setAutor(String): void
+    + setCategoria(String): void
+    + setPaginas(int): void
+    + setStock(int): void
+    + toString(): String
+}
+
+class Registro {
+    - String rutVendedor
+    - String nombre
+    - String apellido
+    - String isbnLibro
+    - String nombreLibro
+    - String tipoTransaccion
+
+    + getRutVendedor(): String
+    + getNombre(): String
+    + getApellido(): String
+    + getIsbnLibro(): String
+    + getNombreLibro(): String
+    + getTipoTransaccion(): String
+    + setRutVendedor(String): void
+    + setNombre(String): void
+    + setApellido(String): void
+    + setIsbnLibro(String): void
+    + setNombreLibro(String): void
+    + setTipoTransaccion(String): void
+  }
+}
+
+package Utils {
+class ManejadorArchivos {
+    + leerUsuarios(String): List<Usuario>
+    + leerLibros(String): List<Libro>
+    + escribirRegistro(List<Registro>, String): void
+    + escribirLibros(List<Libro>, String): void
+}
+}
+package Services {
+interface Sistema {
+    + iniciarSesion(String, String): boolean
+    + buscarUsuario(String): Usuario
+    + buscarLibro(String): Libro
+    + prestarLibro(String, String): boolean
+    + agregarLibro(Libro): boolean
+    + devolverLibro(String, String): boolean
+    + guardarLibros(): void
+    + cerrarSistema(): void
+}
+
+class SistemaImpl {
+    - List<Usuario> usuarios
+    - List<Libro> libros
+    - List<Registro> registros
+    - ManejadorArchivos manejadorArchivos
+}
+}
+Sistema <|.. SistemaImpl
+
+
+
+package UI {
+
+class Interfaz {
+    - Color celestePastel
+    - Color azulSuave
+    - Color Gris
+    - SistemaImpl sistema
+    - JFrame frame
+    - JTextField rutField
+    - JPasswordField contrasenaField
+    - String rutUsuario
+
+    + Interfaz(SistemaImpl): void
+    + createGUI(): void
+    + mostrarMenuPrincipal(): void
+    + mostrar(): void
+}
+}
+UI.Interfaz --> Services.SistemaImpl
+SistemaImpl "1" -- "1..*" Usuario
+SistemaImpl "1" -- "1..*" Libro
+SistemaImpl "1" -- "1..*" Registro
+SistemaImpl "1" -- "1" ManejadorArchivos
+Usuario "1" -- "0..*" Registro
+Libro "1" -- "0..*" Registro
+
+
+@enduml
